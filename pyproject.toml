@@ -1,5 +1,13 @@
 [tool]
 
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "1.2.0"
+tag_format = "$version"
+version_files = [
+    "pyproject.toml:version",
+]
+
 [tool.poetry]
 name = "mkdocs-blogging-plugin"
 version = "1.2.0"
