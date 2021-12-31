@@ -1,3 +1,7 @@
+[build-system]
+requires = ["poetry-core @ git+https://github.com/python-poetry/poetry-core.git@master"]
+build-backend = "poetry.core.masonry.api"
+
 [tool]
 
 [tool.commitizen]
