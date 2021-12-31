@@ -2,10 +2,12 @@
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v3.2.0
+  rev: v4.1.0
   hooks:
   - id: trailing-whitespace
+    exclude: ^(docs/(index|migration).md|.github/workflows/publish.yml|mkdocs_blogging_plugin/(templates/blog.html|util.py))
   - id: end-of-file-fixer
+    exclude: ^(.gitignore|docs/theme.md|MANIFEST.in|mkdocs.yml|mkdocs_blogging_plugin/(templates/blog.*.html|util.py)|requirements(-docs)?.txt)
   - id: check-yaml
   - id: check-added-large-files
 - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
@@ -15,8 +17,9 @@ repos:
     args: [--autofix]
   - id: pretty-format-yaml
     args: [--autofix]
+    exclude: ^(.github/workflows/publish.yml|mkdocs.yml)
 - repo: https://github.com/commitizen-tools/commitizen
-  rev: master
+  rev: v2.20.3
   hooks:
   - id: commitizen
     stages: [commit-msg]
