@@ -279,6 +279,7 @@ class BloggingPlugin(BasePlugin):
 
     def sorted_pages(self, pages):
         # print(pages[0].__dict__)
-        return sorted(pages,
-                      key=lambda page: page.meta["git-timestamp"],
-                      reverse=self.sort["from"] == "new")
+        kwargs = dict(reverse=self.sort["from"] == "new")
+        if "git-timestamp" in page.meta:
+            kwargs["key"] = lambda page: page.meta["git-timestamp"]
+        return sorted(pages, **kwargs)
