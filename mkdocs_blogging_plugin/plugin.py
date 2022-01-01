@@ -268,7 +268,7 @@ class BloggingPlugin(BasePlugin):
     def sorted_pages(self, pages):
         return sorted(
             pages,
-            key=lambda page: page.meta["git-timestamp"],
+            key=lambda page: page.meta.get("git-timestamp"),
             reverse=self.sort["from"] == "new",
         )
 
