@@ -170,6 +170,7 @@ class BloggingPlugin(BasePlugin):
     def on_page_markdown(self, markdown, page, config, files):
         if "tags" in self.features and "tags" in page.meta:
             tags = page.meta["tags"]
+            page = self.with_timestamp(page)
             if isinstance(tags, list):
                 for tag in tags:
                     if tag not in self.tags:
@@ -210,26 +211,8 @@ class BloggingPlugin(BasePlugin):
         file_path = Path(page.file.src_path)
         for dir in self.docs_dirs:
             dir_path = Path(dir)
-            if file_path.parents[0] == dir_path:
-                timestamp = None
-                if self.meta_time_format:
-                    if "time" in page.meta:
-                        timestamp = datetime.strptime(
-                            page.meta["time"], self.meta_time_format).timestamp()
-                    elif "date" in page.meta:
-                        timestamp = datetime.strptime(
-                            page.meta["date"], self.meta_time_format).timestamp()
-                if not timestamp:
-                    timestamp = self.util.get_git_commit_timestamp(
-                        page.file.abs_src_path,
-                        is_first_commit=self.sort["by"] != "revision",
-                    )
-                if "git-timestamp" in page.meta:
-                    page.meta["git-timestamp"] = timestamp
-                page.meta["localized-time"] = self.util.get_localized_date(
-                    timestamp, False, format=self.time_format, _locale=self.locale)
-                self.blog_pages.append(page)
-
+            if dir_path in file_path.parents:
+                self.blog_pages.append(self.with_timestamp(page))
                 break
 
     def on_post_page(self, output, page, config):
@@ -283,20 +266,30 @@ class BloggingPlugin(BasePlugin):
         )
 
     def sorted_pages(self, pages):
-        # print(pages[0].__dict__)
-        try:
-            return sorted(
-                pages,
-                key=get_key,
-                reverse=self.sort["from"] == "new",
+        return sorted(
+            pages,
+            key=lambda page: page.meta["git-timestamp"],
+            reverse=self.sort["from"] == "new",
+        )
+
+    def with_timestamp(self, page):
+        timestamp = None
+        if self.meta_time_format:
+            if "time" in page.meta:
+                timestamp = datetime.strptime(
+                    page.meta["time"], self.meta_time_format
+                ).timestamp()
+            elif "date" in page.meta:
+                timestamp = datetime.strptime(
+                    page.meta["date"], self.meta_time_format
+                ).timestamp()
+        if not timestamp:
+            timestamp = self.util.get_git_commit_timestamp(
+                page.file.abs_src_path, is_first_commit=self.sort["by"] != "revision"
             )
-        except TypeError as err:
-            raise err
+        page.meta["git-timestamp"] = timestamp
+        page.meta["localized-time"] = self.util.get_localized_date(
+            timestamp, False, format=self.time_format, _locale=self.locale
+        )
 
-
-def get_key(page: Page) -> T.Tuple[T.Optional[str], ...]:
-    return (
-        page.meta.get("git-timestamp"),
-        page.meta.get("url"),
-        page.meta.get("title"),
-    )
+        return page
