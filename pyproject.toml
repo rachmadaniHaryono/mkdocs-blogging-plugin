@@ -36,7 +36,7 @@ pre-commit = "^2.16.0"
 pytest = "^6.2.5"
 
 [tool.poetry.plugins."mkdocs.plugins"]
-blogging = "mkdocs_logging_plugin.plugin:BloggingPlugin"
+blogging = "mkdocs_blogging_plugin.plugin:BloggingPlugin"
 
 [tool.pytest.ini_options]
 filterwarnings = [
