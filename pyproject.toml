@@ -35,6 +35,9 @@ mkdocs-awesome-pages-plugin = {version = ">=2.5.0", extras = ["docs"]}
 pre-commit = "^2.16.0"
 pytest = "^6.2.5"
 
+[tool.poetry.plugins."mkdocs.plugins"]
+blogging = "mkdocs_logging_plugin.plugin:BloggingPlugin"
+
 [tool.pytest.ini_options]
 filterwarnings = [
   "ignore::DeprecationWarning:mkdocs.utils.filters",
