@@ -254,7 +254,7 @@ class BloggingPlugin(BasePlugin):
     def generate_html(self, pages) -> str:
         blog_pages = sorted(
             pages,
-            key=get_key,
+            key=lambda page: page.meta["git-timestamp"],
             reverse=self.sort["from"] == "new",
         )
         theme_options = self.theme.get("options") if self.theme else []
