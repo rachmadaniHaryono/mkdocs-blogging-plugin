@@ -6,7 +6,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.commitizen]
 name = "cz_conventional_commits"
-version = "1.2.2rc4"
+version = "1.2.2rc5"
 tag_format = "$version"
 version_files = [
     "pyproject.toml:version",
@@ -14,7 +14,7 @@ version_files = [
 
 [tool.poetry]
 name = "mkdocs-blogging-plugin"
-version = "1.2.2rc4"
+version = "1.2.2rc5"
 description = "Mkdocs plugin that generates a blog index page sorted by creation date."
 license = "MIT"
 keywords = ["mkdocs", "blog", "plugin"]
