@@ -5,6 +5,7 @@
 
 {% for entry in entries %}
 <h3 id="{{ entry }}">#{{ entry }}</h3>
+<ul>
     {% for page in entries[entry] %}
         {% set time = "" %}
             {% if page.meta["localized-time"] %}
@@ -18,4 +19,5 @@
             </span>
         </li>
     {% endfor %}
+</ul>
 {% endfor %}
